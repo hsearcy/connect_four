@@ -13,7 +13,9 @@ class Home extends React.Component {
       password: null,
       player1: null,
       player2: null,
-      mode: 1
+      mode: null,
+      move: null,
+      winner: null
     };
   }
 
@@ -25,10 +27,13 @@ class Home extends React.Component {
     axios.get('game/new')
       .then(response => {
         console.log(response.data);
+        let gamestate = response.data;
         this.setState({ 
-          id: response.data.id,
-          boardstatus: response.data.boardstatus,
-          mode: response.data.mode
+          id: gamestate.id,
+          boardstatus: gamestate.boardstatus,
+          mode: gamestate.mode,
+          move: gamestate.move,
+          winner: gamestate.winner
          })
       })
       .catch(error => {
@@ -42,6 +47,12 @@ class Home extends React.Component {
       moveCol: col
     })
     .then(response => {
+      let gamestate = response.data;
+      this.setState({
+        boardstatus: gamestate.boardstatus,
+        move: gamestate.move,
+        winner: gamestate.winner
+      })
       console.log(response);
     })
     .catch(error => {

@@ -11,9 +11,9 @@ class GameController < ApplicationController
 
   def move
     game = Game.find(params[:id])
-    puts game.to_json
     puts params[:moveCol]
-    validateMove(game, params[:moveCol])
+    puts game.to_json
+    game = validateMove(game, params[:moveCol])
     render json: game.to_json
   end
 
@@ -21,7 +21,10 @@ class GameController < ApplicationController
   def validateMove(game, move_col)
     valid_disc = game.boardstatus[move_col].find_index { |disc| disc == 0 }
     unless valid_disc.nil? 
-
+      game.boardstatus[move_col][valid_disc] = game.move
+      game.move == 1 ? game.move = 2 : game.move = 1
+      game.save
     end
+    return game
   end
 end
