@@ -31,11 +31,15 @@ class Home extends React.Component {
   }
 
   render() {
+    if(!this.state.boardstate) {
+      return <div>wait pls.</div>
+    }
+
     return (
       <div>
         <h1> Welcome to Connect Four! </h1>
         <div className="game-board">
-          <Board currentState={this.state.boardstate}/>
+          <Board boardstate={this.state.boardstate}/>
         </div>
         <div className="game-status">
           <div>Turn: {} </div>

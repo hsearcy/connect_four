@@ -4,7 +4,7 @@ class Game < ApplicationRecord
 
   def self.setup
     game = self.create(
-      boardstate: Array.new(7){ Array.new(6) }
+      boardstate: Array.new(7){ Array.new(6){0} }
 
     )
     puts 'game'
