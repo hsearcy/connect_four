@@ -4,14 +4,20 @@ import {
   Route
 } from 'react-router-dom';
 import Home from './Home';
+import Game from './Game';
 
 const App = (props) => (
   <Router>
     <div>
       <Route
-        path='/'
+        exact path='/'
         component={Home}
       />
+      <Route
+        path='/play/:mode'
+        component={Game}
+      />
+
     </div>
   </Router>
 )
