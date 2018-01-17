@@ -28,7 +28,7 @@ class GameController < ApplicationController
   end
 
   def checkWinner(boardstatus, move_col, move_row, player)
-    return player if checkVertical(boardstatus, move_col, move_row)
+    return player if checkVertical(boardstatus, move_col, player)
     
     return 0;
   end
