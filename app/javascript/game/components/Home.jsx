@@ -2,11 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import Board from './board';
 
+axios.defaults.headers.post['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 class Home extends React.Component {
   constructor () {
     super();
 
     this.state = {
+      id: null,
       boardstate: null,
       password: null,
       player1: null,
@@ -23,11 +25,24 @@ class Home extends React.Component {
     axios.get('game/new')
       .then(response => {
         console.log(response.data);
-        this.setState({ boardstate: response.data })
+        this.setState({ boardstate: response.data.boardstate })
       })
       .catch(error => {
         console.error(error);
       });
+  }
+
+  handleClick(col) {
+    axios.post('game/move', {
+      id: this.state.id,
+      moveCol: col
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(error);
+    })
   }
 
   render() {
@@ -39,7 +54,10 @@ class Home extends React.Component {
       <div>
         <h1> Welcome to Connect Four! </h1>
         <div className="game-board">
-          <Board boardstate={this.state.boardstate}/>
+          <Board
+            boardstate={this.state.boardstate}
+            onClick={col => this.handleClick(col)}
+          />
         </div>
         <div className="game-status">
           <div>Turn: {} </div>
