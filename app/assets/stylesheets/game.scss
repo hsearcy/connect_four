@@ -9,13 +9,17 @@
     height: 100%;
     width: 100%;
     box-sizing:border-box;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
 
     .disc {
-      float: left;
+      margin-top: auto;
       width: 14%;
       height: 16%;
       padding-top: 20px;
       border-radius: 50%;
+
     }
 
     .disc0 {
