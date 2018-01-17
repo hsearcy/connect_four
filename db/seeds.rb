@@ -3,8 +3,9 @@ Game.delete_all
 Game.create! (
   [
     {
-      boardstate: '[[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ],[ 0, 0, 0, 0, 0, 0 ]]',
-      password: '',
+      password: 'a',
+      boardstate: 'huh',
+      
       player1: 'houston',
       player2: 'bob',
       mode: 1,

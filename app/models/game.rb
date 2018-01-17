@@ -1,15 +1,15 @@
 class Game < ApplicationRecord
-  # id boardstate password player1 player2 mode
   attr_accessor :boardstate
 
   def self.setup
-    game = self.create(
-      boardstate: Array.new(7){ Array.new(6){0} }
-
-    )
+    game = self.new
+    game.boardstate = 'b'#Array.new(7){ Array.new(6){0} }.to_json
+    game.mode = 1
+    game.move = 1
+    game.save
     puts 'game'
     puts game.id
-    puts game.boardstate.to_json
+    puts game
     return game
   end
 end

@@ -25,7 +25,11 @@ class Home extends React.Component {
     axios.get('game/new')
       .then(response => {
         console.log(response.data);
-        this.setState({ boardstate: response.data.boardstate })
+        this.setState({ 
+          id: response.data.id,
+          boardstate: response.data.boardstate,
+          mode: response.data.mode
+         })
       })
       .catch(error => {
         console.error(error);

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117113957) do
+ActiveRecord::Schema.define(version: 20180117002114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(version: 20180117113957) do
     t.string "player1"
     t.string "player2"
     t.integer "mode"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.integer "move"
     t.integer "winner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
