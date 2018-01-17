@@ -1,83 +1,27 @@
 import React from 'react';
-import axios from 'axios';
-import Board from './board';
+import { Link } from 'react-router-dom';
 
-axios.defaults.headers.post['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 class Home extends React.Component {
-  constructor () {
-    super();
-
-    this.state = {
-      id: null,
-      boardstatus: null,
-      password: null,
-      player1: null,
-      player2: null,
-      mode: null,
-      move: null,
-      winner: null
-    };
-  }
-
-  componentDidMount() {
-    this.startGame();
-  }
-  
-  startGame(){
-    axios.get('game/new')
-      .then(response => {
-        console.log(response.data);
-        let gamestate = response.data;
-        this.setState({ 
-          id: gamestate.id,
-          boardstatus: gamestate.boardstatus,
-          mode: gamestate.mode,
-          move: gamestate.move,
-          winner: gamestate.winner
-         });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
-  handleClick(col) {
-    if (this.state.winner) return;
-    axios.post('game/move', {
-      id: this.state.id,
-      moveCol: col
-    })
-    .then(response => {
-      let gamestate = response.data;
-      this.setState({
-        boardstatus: gamestate.boardstatus,
-        move: gamestate.move,
-        winner: gamestate.winner
-      })
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(error);
-    })
-  }
 
   render() {
-    if(!this.state.boardstatus) {
-      return <div>wait pls.</div>
-    }
-
     return (
       <div>
-        <h1> Welcome to Connect Four! </h1>
-        <div className="game-board">
-          <Board
-            boardstatus={this.state.boardstatus}
-            onClick={col => this.handleClick(col)}
-          />
+        <h1> Welcome to Connect Four!</h1>
+        <div>
+          <h2>Want to play a new 2 player game?</h2>
+          <Link to={'/play/1'}>Play a 2 player game!</Link>
         </div>
-        <div className="game-status">
-          <div>Turn - Player {this.state.move} </div>
-          <div>Winner - Player {this.state.winner} </div>
+        <div>
+          <h2>Want to play a new game against Bob (easy)?</h2>
+          <Link to={'/play/2'}>Play a game against Bob!</Link>
+        </div>
+        <div>
+          <h2>Want to play a new game against Alice (hard)?</h2>
+          <Link to={'/play/3'}>Play a game against Alice!</Link>
+        </div>
+        <div>
+          <h2>Have a Game ID from an ongoing game and want to continue?</h2>
+          Enter game ID:
         </div>
       </div>
     );

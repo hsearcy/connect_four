@@ -38,7 +38,6 @@ class GameController < ApplicationController
   end
 
   def vertical_win(boardstatus, move_col, player)
-    .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
     return true if boardstatus[move_col].chunk{|disc| disc == player && disc }
                                         .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
     false
