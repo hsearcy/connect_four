@@ -38,8 +38,6 @@ class GameController < ApplicationController
   end
 
   def vertical_win(boardstatus, move_col, player)
-    puts "HEY"
-    puts boardstatus[move_col].chunk{|disc| disc == player && disc }
     .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
     return true if boardstatus[move_col].chunk{|disc| disc == player && disc }
                                         .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
@@ -66,7 +64,6 @@ class GameController < ApplicationController
           right_matches += 1
         end
       end
-      puts (left_matches + right_matches)
       return true if (left_matches + right_matches) > 2
       return false unless ( continue_left || continue_right )
     end
@@ -93,7 +90,6 @@ class GameController < ApplicationController
           right_matches += 1
         end
       end
-      puts (left_matches + right_matches)
       return true if (left_matches + right_matches) > 2
       return false unless ( continue_left || continue_right )
     end
@@ -120,7 +116,6 @@ class GameController < ApplicationController
           right_matches += 1
         end
       end
-      puts (left_matches + right_matches)
       return true if (left_matches + right_matches) > 2
       return false unless ( continue_left || continue_right )
     end
