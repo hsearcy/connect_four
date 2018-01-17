@@ -1,15 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  boardstate: MyString
+  boardstatus: MyString
   password: MyString
   player1: MyString
   player2: MyString
-  mode: MyString
+  mode: 1
+  move: 1
+  winner: 1
 
 two:
-  boardstate: MyString
+  boardstatus: MyString
   password: MyString
   player1: MyString
   player2: MyString
-  mode: MyString
+  mode: 1
+  move: 1
+  winner: 1

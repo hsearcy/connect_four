@@ -1,9 +1,9 @@
 class Game < ApplicationRecord
-  attr_accessor :boardstate
+  serialize :boardstatus
 
   def self.setup
     game = self.new
-    game.boardstate = 'b'#Array.new(7){ Array.new(6){0} }.to_json
+    game.boardstatus = Array.new(7){ Array.new(6){0} }
     game.mode = 1
     game.move = 1
     game.save

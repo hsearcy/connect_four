@@ -19,7 +19,7 @@ class GameController < ApplicationController
 
   private
   def validateMove(game, move_col)
-    valid_disc = game.boardstate[move_col].find_index { |disc| disc == 0 }
+    valid_disc = game.boardstatus[move_col].find_index { |disc| disc == 0 }
     unless valid_disc.nil? 
 
     end

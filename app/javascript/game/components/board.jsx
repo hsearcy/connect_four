@@ -31,7 +31,7 @@ export default class Board extends React.Component {
 
 
   renderBoard() {
-    return this.props.boardstate.map( (col, col_index) => {
+    return this.props.boardstatus.map( (col, col_index) => {
       return this.getDiscs(col, col_index)
     })
   }

@@ -9,7 +9,7 @@ class Home extends React.Component {
 
     this.state = {
       id: null,
-      boardstate: null,
+      boardstatus: null,
       password: null,
       player1: null,
       player2: null,
@@ -27,7 +27,7 @@ class Home extends React.Component {
         console.log(response.data);
         this.setState({ 
           id: response.data.id,
-          boardstate: response.data.boardstate,
+          boardstatus: response.data.boardstatus,
           mode: response.data.mode
          })
       })
@@ -50,7 +50,7 @@ class Home extends React.Component {
   }
 
   render() {
-    if(!this.state.boardstate) {
+    if(!this.state.boardstatus) {
       return <div>wait pls.</div>
     }
 
@@ -59,7 +59,7 @@ class Home extends React.Component {
         <h1> Welcome to Connect Four! </h1>
         <div className="game-board">
           <Board
-            boardstate={this.state.boardstate}
+            boardstatus={this.state.boardstatus}
             onClick={col => this.handleClick(col)}
           />
         </div>
