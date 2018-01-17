@@ -34,7 +34,7 @@ class Home extends React.Component {
           mode: gamestate.mode,
           move: gamestate.move,
           winner: gamestate.winner
-         })
+         });
       })
       .catch(error => {
         console.error(error);
@@ -42,6 +42,7 @@ class Home extends React.Component {
   }
 
   handleClick(col) {
+    if (this.state.winner) return;
     axios.post('game/move', {
       id: this.state.id,
       moveCol: col
@@ -75,7 +76,8 @@ class Home extends React.Component {
           />
         </div>
         <div className="game-status">
-          <div>Turn: {} </div>
+          <div>Turn - Player {this.state.move} </div>
+          <div>Winner - Player {this.state.winner} </div>
         </div>
       </div>
     );
