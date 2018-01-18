@@ -17,7 +17,10 @@ const App = (props) => (
         path='/play/:mode'
         component={Game}
       />
-
+      <Route
+        path='/play/:mode/:id'
+        component={Game}
+      />
     </div>
   </Router>
 )

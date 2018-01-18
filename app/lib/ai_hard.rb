@@ -5,18 +5,19 @@ class AIHard
   end
   
   def pick_move(boardstatus)
-    @best_value = {}
-    negamax(boardstatus, @depth, -9999999, 9999999, 1)
-    puts "depth: #{@depth}"
-    puts "best values: #{@best_value}"
-    move_col = @best_value.max_by { |move, value| value }[0]
-    [move_col, boardstatus[move_col].index(0)]
+   # @best_value = {}
+   @best_value = []
+    value = negamax(boardstatus, @depth, -9999999, 9999999, 1)
+    puts "best values: #{@best_value}, with value = #{value}"
+    # move_col = @best_value.max_by { |move, value| value }[0]
+    # [move_col, boardstatus[move_col].index(0)]
+    @best_value
   end
   
   def negamax(boardstatus, depth, alpha, beta, color)
     puts "Negamax called with color = #{color}, depth = #{depth}"
     player = color == 1 ? 2 : 1
-    return (color * evaluate(boardstatus, player)) if depth == 0 || terminal(boardstatus)
+    return (color * evaluate(boardstatus, player)) if (depth == 0 || terminal(boardstatus))
   
     max = -9999999
     legal_moves(boardstatus).each do |column|
@@ -27,9 +28,14 @@ class AIHard
       
       temp_board[column][row] = player
       negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
+      puts "negamax_value #{negamax_value}"
+      if negamax_value > max
+        max = negamax_value
+        @best_value = [column, row]  if depth == @depth
+      end
       
-      max = [max, negamax_value].max
-      @best_value[column] = max if depth == @depth
+      # max = [max, negamax_value].max
+      # @best_value[column] = max if depth == @depth
       alpha = [alpha, negamax_value].max
       return alpha if alpha >= beta
     end
@@ -74,11 +80,12 @@ class AIHard
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
       next if move_row.nil?
-      (1..3).each do |i| 
+      4.times do |i| 
         break if move_row - i < 0 || boardstatus[move_col][move_row-1] != player
         utility += 10**i
       end
     end
+    puts "vertical: #{utility}"
     utility
   end
 
@@ -87,26 +94,15 @@ class AIHard
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
       next if move_row.nil?
-      continue_left = true
-      continue_right = true
-      (1..3).each do |i| 
-        if continue_left
-          if move_col - i < 0 || boardstatus[move_col - i][move_row] != player
-            continue_left = false
-          else
-            utility += 10**i
-          end
+      4.times do |i| 
+        if move_col + i > 6 || boardstatus[move_col + i][move_row] != player
+          break
+        else
+          utility += 10**i
         end
-        if continue_right
-          if move_col + i > 6 || boardstatus[move_col + i][move_row] != player
-            continue_right = false
-          else
-            utility += 10**i
-          end
-        end
-        break unless ( continue_left || continue_right )
       end
     end
+    puts "horizontal: #{utility}"
     utility
   end
 
@@ -115,26 +111,15 @@ class AIHard
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
       next if move_row.nil?
-      continue_left = true
-      continue_right = true
-      (1..3).each do |i| 
-        if continue_left
-          if move_col - i < 0 || move_row + i > 5 || boardstatus[move_col - i][move_row + i] != player
-            continue_left = false
-          else
-            utility += 10**i
-          end
+      4.times do |i| 
+        if move_col + i > 6 || move_row - i < 0 || boardstatus[move_col + i][move_row - i] != player
+          break;
+        else
+          utility += 10**i
         end
-        if continue_right
-          if move_col + i > 6 || move_row - i < 0 || boardstatus[move_col + i][move_row - i] != player
-            continue_right = false
-          else
-            utility += 10**i
-          end
-        end
-        break unless ( continue_left || continue_right )
       end
     end
+    puts "top_diag: #{utility}"
     utility
   end
 
@@ -143,43 +128,16 @@ class AIHard
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
       next if move_row.nil?
-      continue_left = true
-      continue_right = true
-      (1..3).each do |i| 
-        if continue_left
-          if move_col - i < 0 || move_row - i < 0 || boardstatus[move_col - i][move_row - i] != player
-            continue_left = false
-          else
-            utility += 10**i
-          end
+      4.times do |i| 
+        if move_col + i > 6 || move_row + i > 5 || boardstatus[move_col + i][move_row + i] != player
+          break;
+        else
+          utility += 10**i
         end
-        if continue_right
-          if move_col + i > 6 || move_row + i > 5 || boardstatus[move_col + i][move_row + i] != player
-            continue_right = false
-          else
-            utility += 10**i
-          end
-        end
-        break unless ( continue_left || continue_right )
       end
     end
+    
+    puts "bot_diag: #{utility}"
     utility
   end
 end
-
-
-
-# def negamax(boardstatus, move_col, move_row, depth, player)
-  
-#   color = player == 2 ? 1 : -1
-#   return (player * evaluate(boardstatus, move_col, move_row)) if depth == 0 || terminal(boardstatus)
-
-#   next_player = player == 1 ? 2 : 1
-#   bestValue = -9999999
-#   legal_moves.each do |move|
-#     value = -negamax(boardstatus, move_col, move_row, depth - 1, next_player)
-#     bestValue = [bestValue, value].max
-#   end
-
-# end
-
