@@ -11,8 +11,8 @@ class AIHard
     [move_col, boardstatus[move_col].index(0)]
   end
   
-  def negamax(boardstatus, depth, alpha, beta, player)
-    color = player == 2 ? 1 : -1
+  def negamax(boardstatus, depth, alpha, beta, color)
+    player = color == 1 ? 2 : 1
     return (color * evaluate(boardstatus)) if depth == 0 || terminal(boardstatus)
   
     max = -5000
@@ -21,6 +21,7 @@ class AIHard
       row = -1 if row.nil?
       row += 1
       temp_board =  Marshal.load(Marshal.dump(boardstatus))
+      
       temp_board[column][row] = player
       negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
       
@@ -45,7 +46,8 @@ class AIHard
   end
 
   def evaluate(boardstatus)
-    calculate_positive_utility(boardstatus)
+    calculate_positive_utility(boardstatus) -
+      calculate_negative_utility(boardstatus)
   end
 
   def calculate_positive_utility(boardstatus)
