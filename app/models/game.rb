@@ -25,16 +25,18 @@ class Game < ApplicationRecord
       game.boardstatus[move_col][move_row] = game.move
       puts game.mode
       game.winner = WinDetection.winner(game.boardstatus, move_col, move_row, game.move)
-      if game.mode == 2
-        ai_move = AIEasy.pick_move(game.boardstatus, move_col, move_row)
-        game.boardstatus[ai_move[0]][ai_move[1]] = 2
-        game.winner = ai_move[2]
-      elsif game.mode == 3
-        ai_move = AIHard.pick_move(game.boardstatus, move_col, move_row)
-        game.boardstatus[ai_move[0]][ai_move[1]] = 2
-        game.winner = ai_move[2]
-      else
-        game.move == 1 ? game.move = 2 : game.move = 1
+      if game.winner == 0
+        if game.mode == 2
+          ai_move = AIEasy.pick_move(game.boardstatus, move_col, move_row)
+          game.boardstatus[ai_move[0]][ai_move[1]] = 2
+          game.winner = ai_move[2]
+        elsif game.mode == 3
+          ai_move = AIHard.pick_move(game.boardstatus, move_col, move_row)
+          game.boardstatus[ai_move[0]][ai_move[1]] = 2
+          game.winner = ai_move[2]
+        else
+          game.move == 1 ? game.move = 2 : game.move = 1
+        end
       end
       game.save
     end
