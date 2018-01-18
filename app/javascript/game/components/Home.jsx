@@ -23,7 +23,7 @@ export default class Home extends React.Component {
           <Link to={'/play/2'}><button>Play a game against Bob!</button></Link>
         </div>
         <div>
-          <h2>Want to play a new game against Alice (hard)?</h2>
+          <h2>Want to play a new game against Alice (WIP)?</h2>
           <Link to={'/play/3'}><button>Play a game against Alice!</button></Link>
         </div>
         <div>

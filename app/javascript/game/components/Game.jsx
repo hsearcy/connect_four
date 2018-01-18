@@ -24,10 +24,11 @@ export default class Game extends React.Component {
     this.startGame();
   }
   
-  startGame(){
+  startGame(reset = false){
     axios.post('/game/new/', {
       mode: this.state.mode,
-      id: this.state.id
+      id: this.state.id,
+      reset: reset
     })
       .then(response => {
         let gamestate = response.data;
@@ -91,7 +92,7 @@ export default class Game extends React.Component {
           <div>Game ID (for loading): {this.state.id} </div>
         </div>
         <div >
-          <button onClick={() => this.startGame()}>
+          <button onClick={() => this.startGame(true)}>
             Start Over?
           </button>
         </div>
