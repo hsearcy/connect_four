@@ -49,7 +49,7 @@ class AIHard
   end
 
   def evaluate(boardstatus, player)
-    utility = calculate_positive_utility(boardstatus, player) - calculate_negative_utility(boardstatus, player)
+    utility = calculate_positive_utility(boardstatus, player) #- calculate_negative_utility(boardstatus, player)
     puts "Player = #{player}, utility = #{utility}"
     utility
   end
