@@ -76,7 +76,7 @@ class AIHard
       next if move_row.nil?
       (1..3).each do |i| 
         break if move_row - i < 0 || boardstatus[move_col][move_row-1] != player
-        utility += 10**(i)
+        utility += 10**i
       end
     end
     utility
@@ -94,14 +94,14 @@ class AIHard
           if move_col - i < 0 || boardstatus[move_col - i][move_row] != player
             continue_left = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         if continue_right
           if move_col + i > 6 || boardstatus[move_col + i][move_row] != player
             continue_right = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         break unless ( continue_left || continue_right )
@@ -122,14 +122,14 @@ class AIHard
           if move_col - i < 0 || move_row + i > 5 || boardstatus[move_col - i][move_row + i] != player
             continue_left = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         if continue_right
           if move_col + i > 6 || move_row - i < 0 || boardstatus[move_col + i][move_row - i] != player
             continue_right = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         break unless ( continue_left || continue_right )
@@ -150,14 +150,14 @@ class AIHard
           if move_col - i < 0 || move_row - i < 0 || boardstatus[move_col - i][move_row - i] != player
             continue_left = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         if continue_right
           if move_col + i > 6 || move_row + i > 5 || boardstatus[move_col + i][move_row + i] != player
             continue_right = false
           else
-            utility += 10**(i-1)
+            utility += 10**i
           end
         end
         break unless ( continue_left || continue_right )
