@@ -9,14 +9,6 @@ class Game < ApplicationRecord
     self.move ||= 1
   end
 
-  # def self.setup
-  #   game = self.new
-  #   game.boardstatus = Array.new(7){ Array.new(6){0} }
-  #   game.move = 1
-  #   game.save
-  #   return game
-  # end
-
   def self.updateGame(id, move_col)
     game = self.find(id)
     move_row = game.boardstatus[move_col].index(0)

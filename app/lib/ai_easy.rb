@@ -10,13 +10,11 @@ class AIEasy
       valid_moves.push(column)
       temp_board =  Marshal.load(Marshal.dump(boardstatus))
 
-      temp_board[column][next_row] = 1
-      if WinDetection.winner(temp_board, column, next_row, 1) == 1
-        return [column, next_row, 0] 
-      end
-
       temp_board[column][next_row] = 2
       return [column, next_row, 2] if WinDetection.winner(temp_board, column, next_row, 2) == 2
+
+      temp_board[column][next_row] = 1
+      return [column, next_row, 0]  if WinDetection.winner(temp_board, column, next_row, 1) == 1
     end
 
     if player_move_col == 0 || player_move_col == 6

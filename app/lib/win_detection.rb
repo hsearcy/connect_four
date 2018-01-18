@@ -10,9 +10,6 @@ class WinDetection
   end
 
   def self.vertical_win(boardstatus, move_col, player)
-    # puts "verticals:"
-    # boardstatus[move_col].chunk{|disc| disc == player && disc }.each { |num, ary| p [num, ary.count] }
-    # puts "end"
     return true if boardstatus[move_col].chunk{|disc| disc == player && disc }
                                         .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
     false
