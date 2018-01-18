@@ -23,9 +23,10 @@ class Game < ApplicationRecord
           game.boardstatus[ai_move[0]][ai_move[1]] = 2
           game.winner = ai_move[2]
         elsif game.mode == 3
-          ai_move = AIHard.pick_move(game.boardstatus, move_col, move_row)
+          hard_ai = AIHard.new(2)
+          ai_move = hard_ai.pick_move(game.boardstatus)
           game.boardstatus[ai_move[0]][ai_move[1]] = 2
-          game.winner = ai_move[2]
+          game.winner = WinDetection.winner(game.boardstatus, move_col, move_row, 2)
         else
           game.move == 1 ? game.move = 2 : game.move = 1
         end
