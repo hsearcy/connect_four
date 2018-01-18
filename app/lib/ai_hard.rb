@@ -15,7 +15,7 @@ class AIHard
     player = color == 1 ? 2 : 1
     return (color * evaluate(boardstatus)) if depth == 0 || terminal(boardstatus)
   
-    max = -5000
+    max = -9999999
     legal_moves(boardstatus).each do |column|
       row = get_top_played_row(boardstatus[column])
       row = -1 if row.nil?
@@ -58,10 +58,10 @@ class AIHard
   end
 
   def calculate_negative_utility(boardstatus)
-    2*(vertical_utility(boardstatus, 1) +
+    vertical_utility(boardstatus, 1) +
         horizontal_utility(boardstatus, 1) +
         top_diagonal_utility(boardstatus, 1) +
-        bottom_diagonal_utility(boardstatus, 1))
+        bottom_diagonal_utility(boardstatus, 1)
   end
 
   def vertical_utility(boardstatus, player)
