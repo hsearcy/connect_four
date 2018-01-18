@@ -6,14 +6,16 @@ class AIHard
   
   def pick_move(boardstatus)
     @best_value = {}
-    negamax(boardstatus, @depth, -5000, 5000, 2)
+    negamax(boardstatus, @depth, -9999999, 9999999, 1)
+    puts "depth: #{@depth}"
+    puts "best values: #{@best_value}"
     move_col = @best_value.max_by { |move, value| value }[0]
     [move_col, boardstatus[move_col].index(0)]
   end
   
   def negamax(boardstatus, depth, alpha, beta, color)
     player = color == 1 ? 2 : 1
-    return (color * evaluate(boardstatus)) if depth == 0 || terminal(boardstatus)
+    return (color * evaluate(boardstatus, player)) if depth == 0 || terminal(boardstatus)
   
     max = -9999999
     legal_moves(boardstatus).each do |column|
@@ -26,7 +28,7 @@ class AIHard
       negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
       
       max = [max, negamax_value].max
-      @best_value[column] = max if depth == 1
+      @best_value[column] = max if depth == @depth
       alpha = [alpha, negamax_value].max
       return alpha if alpha >= beta
     end
@@ -45,23 +47,24 @@ class AIHard
     legal_moves(boardstatus).length == 0
   end
 
-  def evaluate(boardstatus)
-    calculate_positive_utility(boardstatus) -
-      calculate_negative_utility(boardstatus)
+  def evaluate(boardstatus, player)
+    calculate_positive_utility(boardstatus, player) -
+      calculate_negative_utility(boardstatus, player)
   end
 
-  def calculate_positive_utility(boardstatus)
-    vertical_utility(boardstatus, 2) +
-      horizontal_utility(boardstatus, 2) +
-      top_diagonal_utility(boardstatus, 2) +
-      bottom_diagonal_utility(boardstatus, 2)
+  def calculate_positive_utility(boardstatus, player)
+    vertical_utility(boardstatus, player) +
+      horizontal_utility(boardstatus, player) +
+      top_diagonal_utility(boardstatus, player) +
+      bottom_diagonal_utility(boardstatus, player)
   end
 
-  def calculate_negative_utility(boardstatus)
-    vertical_utility(boardstatus, 1) +
-        horizontal_utility(boardstatus, 1) +
-        top_diagonal_utility(boardstatus, 1) +
-        bottom_diagonal_utility(boardstatus, 1)
+  def calculate_negative_utility(boardstatus, player)
+    opponent = player == 1 ? 2 : 1
+    1 * (vertical_utility(boardstatus, opponent) +
+        horizontal_utility(boardstatus, opponent) +
+        top_diagonal_utility(boardstatus, opponent) +
+        bottom_diagonal_utility(boardstatus, opponent))
   end
 
   def vertical_utility(boardstatus, player)
