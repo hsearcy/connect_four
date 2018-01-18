@@ -90,10 +90,10 @@ export default class Game extends React.Component {
           <div>Turn - Player {this.state.move} </div>
           <div>Game ID (for loading): {this.state.id} </div>
         </div>
-        <div onClick={() => this.startGame()}>
-        <button>
-          Start Over?
-        </button>
+        <div >
+          <button onClick={() => this.startGame()}>
+            Start Over?
+          </button>
         </div>
         <Link to='/'><button>Go Home</button></Link>
         
