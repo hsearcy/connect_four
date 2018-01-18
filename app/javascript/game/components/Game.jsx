@@ -25,13 +25,16 @@ class Game extends React.Component {
   }
   
   startGame(){
-    axios.get('/game/new')
+    axios.post('/game/new/', {
+      mode: this.state.mode
+    })
       .then(response => {
         console.log(response.data);
         let gamestate = response.data;
         this.setState({ 
           id: gamestate.id,
           boardstatus: gamestate.boardstatus,
+          mode: gamestate.mode,
           move: gamestate.move,
           winner: gamestate.winner
          });

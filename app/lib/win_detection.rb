@@ -1,5 +1,5 @@
 class WinDetection
-  def self.is_winner? (boardstatus, move_col, move_row, player)
+  def self.winner (boardstatus, move_col, move_row, player)
     return player if (  self.vertical_win(boardstatus, move_col, player) || 
                         self.horizontal_win(boardstatus, move_col, move_row, player) ||
                         self.left_top_diagonal_win(boardstatus, move_col, move_row, player) ||
@@ -10,6 +10,9 @@ class WinDetection
   end
 
   def self.vertical_win(boardstatus, move_col, player)
+    # puts "verticals:"
+    # boardstatus[move_col].chunk{|disc| disc == player && disc }.each { |num, ary| p [num, ary.count] }
+    # puts "end"
     return true if boardstatus[move_col].chunk{|disc| disc == player && disc }
                                         .any? { |same_player, consecutive| same_player && consecutive.count > 3 }
     false

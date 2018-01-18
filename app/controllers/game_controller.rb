@@ -3,7 +3,9 @@ class GameController < ApplicationController
   end
 
   def new
-    game = Game.setup
+    game = Game.create(
+      mode: params[:mode]
+    )
     render json: game.to_json
   end
 
