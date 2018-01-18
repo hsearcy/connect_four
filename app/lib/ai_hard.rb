@@ -75,7 +75,7 @@ class AIHard
       move_row = get_top_played_row(boardstatus[move_col])
       next if move_row.nil?
       (1..3).each do |i| 
-        break if move_row - i < 0 || boardstatus[move_col - i][move_row] != player
+        break if move_row - i < 0 || boardstatus[move_col][move_row-1] != player
         utility += 10**(i)
       end
     end
