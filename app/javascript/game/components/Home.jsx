@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-class Home extends React.Component {
+export default class Home extends React.Component {
   constructor (props) {
     super();
 
@@ -29,11 +29,11 @@ class Home extends React.Component {
         <div>
           <h2>Have a Game ID from an ongoing game and want to continue?</h2>
           Enter game ID:
-          <Link to={'/play/1/'}><button>Play a game against Alice!</button></Link>
+          <input type="text" ref="gameID" onChange={(e) => this.setState({ gameID: e.target.value}) }></input>
+          <Link to={`/play/1/${this.state.gameID}`}>
+          <button>Load game!</button></Link>
         </div>
       </div>
     );
   }
 }
-
-export default Home;

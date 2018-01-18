@@ -14,7 +14,7 @@ const App = (props) => (
         component={Home}
       />
       <Route
-        path='/play/:mode'
+        exact path='/play/:mode'
         component={Game}
       />
       <Route

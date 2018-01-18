@@ -3,9 +3,9 @@ class GameController < ApplicationController
   end
 
   def new
-    game = Game.create(
-      mode: params[:mode]
-    )
+    game = Game.find_by(id: params[:id])
+    puts "GAME #{game}, parms: #{params[:id]}"
+    game = Game.create(mode: params[:mode]) if game.nil?
     render json: game.to_json
   end
 

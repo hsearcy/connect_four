@@ -4,12 +4,12 @@ import Board from './board';
 import { Link } from 'react-router-dom';
 
 axios.defaults.headers.post['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-class Game extends React.Component {
+export default class Game extends React.Component {
   constructor (props) {
     super();
 
     this.state = {
-      id: null,
+      id: props.match.params.id,
       boardstatus: null,
       password: null,
       player1: null,
@@ -26,10 +26,10 @@ class Game extends React.Component {
   
   startGame(){
     axios.post('/game/new/', {
-      mode: this.state.mode
+      mode: this.state.mode,
+      id: this.state.id
     })
       .then(response => {
-        console.log(response.data);
         let gamestate = response.data;
         this.setState({ 
           id: gamestate.id,
@@ -56,8 +56,7 @@ class Game extends React.Component {
         boardstatus: gamestate.boardstatus,
         move: gamestate.move,
         winner: gamestate.winner
-      })
-      console.log(response);
+      });
     })
     .catch(error => {
       console.error(error);
@@ -67,7 +66,7 @@ class Game extends React.Component {
   winner() {
     if (this.state.winner) {
       return (
-        <div className='winner'> Winner - Player {this.state.winner} </div>
+        <h1 className='winner'> Winner - Player {this.state.winner} </h1>
       );
     }
   }
@@ -89,14 +88,17 @@ class Game extends React.Component {
         </div>
         <div className="game-status">
           <div>Turn - Player {this.state.move} </div>
+          <div>Game ID (for loading): {this.state.id} </div>
         </div>
         <div onClick={() => this.startGame()}>
-          <h2>Start Over?</h2>
+        <button>
+          Start Over?
+        </button>
         </div>
+        <Link to='/'><button>Go Home</button></Link>
         
       </div>
     );
   }
 }
 
-export default Game;
