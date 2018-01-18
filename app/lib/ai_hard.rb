@@ -14,6 +14,7 @@ class AIHard
   end
   
   def negamax(boardstatus, depth, alpha, beta, color)
+    puts "Negamax called with color = #{color}, depth = #{depth}"
     player = color == 1 ? 2 : 1
     return (color * evaluate(boardstatus, player)) if depth == 0 || terminal(boardstatus)
   
@@ -48,8 +49,9 @@ class AIHard
   end
 
   def evaluate(boardstatus, player)
-    calculate_positive_utility(boardstatus, player) -
-      calculate_negative_utility(boardstatus, player)
+    utility = calculate_positive_utility(boardstatus, player) - calculate_negative_utility(boardstatus, player)
+    puts "Player = #{player}, utility = #{utility}"
+    utility
   end
 
   def calculate_positive_utility(boardstatus, player)
@@ -61,7 +63,7 @@ class AIHard
 
   def calculate_negative_utility(boardstatus, player)
     opponent = player == 1 ? 2 : 1
-    1 * (vertical_utility(boardstatus, opponent) +
+    1.1 * (vertical_utility(boardstatus, opponent) +
         horizontal_utility(boardstatus, opponent) +
         top_diagonal_utility(boardstatus, opponent) +
         bottom_diagonal_utility(boardstatus, opponent))
@@ -71,7 +73,7 @@ class AIHard
     utility = 0
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
-      return utility if move_row.nil?
+      next if move_row.nil?
       (1..3).each do |i| 
         break if move_row - i < 0 || boardstatus[move_col - i][move_row] != player
         utility += 10**(i)
@@ -84,7 +86,7 @@ class AIHard
     utility = 0
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
-      return utility if move_row.nil?
+      next if move_row.nil?
       continue_left = true
       continue_right = true
       (1..3).each do |i| 
@@ -112,7 +114,7 @@ class AIHard
     utility = 0
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
-      return utility if move_row.nil?
+      next if move_row.nil?
       continue_left = true
       continue_right = true
       (1..3).each do |i| 
@@ -140,7 +142,7 @@ class AIHard
     utility = 0
     7.times do |move_col|
       move_row = get_top_played_row(boardstatus[move_col])
-      return utility if move_row.nil?
+      next if move_row.nil?
       continue_left = true
       continue_right = true
       (1..3).each do |i| 
