@@ -7,8 +7,7 @@ class Evaluation
 
   def evaluate(player)
     opponent = player == 1 ? 2 : 1
-    utility = (1.1 * calculate_utility(player)) - calculate_utility(opponent)
-    utility
+    calculate_utility(player) - calculate_utility(opponent)
   end
 
   def calculate_utility(player)
