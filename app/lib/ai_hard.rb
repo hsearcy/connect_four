@@ -11,7 +11,6 @@ class AIHard
   end
   
   def negamax(boardstatus, depth, alpha, beta, color)
-    #puts "Negamax called with color = #{color}, depth = #{depth}"
     player = get_player(color)
     if (depth == 0 || terminal(boardstatus))
       evaluator = Evaluation.new(boardstatus)
@@ -31,7 +30,6 @@ class AIHard
         negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
       end
 
-     # puts "column: #{column}, row: #{row}, negamax_value #{negamax_value}, max = #{max}"
       if negamax_value > max
         max = negamax_value
         @best_value = [column, row]  if depth == @depth

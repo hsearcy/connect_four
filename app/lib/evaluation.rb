@@ -8,7 +8,6 @@ class Evaluation
   def evaluate(player)
     opponent = player == 1 ? 2 : 1
     utility = (1.1 * calculate_utility(player)) - calculate_utility(opponent)
-    #puts "Player = #{player}, utility = #{utility}"
     utility
   end
 
@@ -26,7 +25,6 @@ class Evaluation
         utility += 10**i
       end
     end
-    #puts "vertical: #{utility}"
     utility
   end
 
@@ -43,7 +41,6 @@ class Evaluation
         end
       end
     end
-    #puts "horizontal: #{utility}"
     utility
   end
 
@@ -60,7 +57,6 @@ class Evaluation
         end
       end
     end
-    #puts "top_diag: #{utility}"
     utility
   end
 
@@ -77,8 +73,6 @@ class Evaluation
         end
       end
     end
-    
-    #puts "bot_diag: #{utility}"
     utility
   end
 
