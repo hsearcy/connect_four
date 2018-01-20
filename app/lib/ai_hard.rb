@@ -21,15 +21,21 @@ class AIHard
       evaluator = Evaluation.new(boardstatus)
       return color * evaluator.evaluate(player)
     end
-  
+
     max = -9999999
     legal_moves(boardstatus).each do |column|
       row = get_next_open_row(boardstatus, column)
       temp_board = Marshal.load(Marshal.dump(boardstatus))
-      
       do_move(temp_board, column, row, player)
-      negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
-      puts "negamax_value #{negamax_value}, max = #{max}"
+
+      winner = WinDetection.winner(temp_board, column, row, player)
+      if winner == player
+        negamax_value = (20000 + @depth - depth)
+      else
+        negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
+      end
+
+      puts "column: #{column}, row: #{row}, negamax_value #{negamax_value}, max = #{max}"
       if negamax_value > max
         max = negamax_value
         @best_value = [column, row]  if depth == @depth
@@ -48,7 +54,7 @@ class AIHard
   end
   
   def legal_moves(boardstatus)
-    boardstatus.each_index.select{|col| !boardstatus[col].index(0).nil? }
+    boardstatus.each_index.select{|col| !boardstatus[col].index(0).nil? } 
   end
   
   def terminal(boardstatus)
