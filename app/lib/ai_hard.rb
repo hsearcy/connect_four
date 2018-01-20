@@ -27,7 +27,7 @@ class AIHard
       row = get_next_open_row(boardstatus, column)
       temp_board = Marshal.load(Marshal.dump(boardstatus))
       
-      do_move(temp_board, column, row, get_player(-color))
+      do_move(temp_board, column, row, player)
       negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
       puts "negamax_value #{negamax_value}, max = #{max}"
       if negamax_value > max
@@ -55,6 +55,7 @@ class AIHard
     legal_moves(boardstatus).length == 0
   end
 
+  def get_next_open_row(boardstatus, column)
     row = get_top_played_row(boardstatus[column])
     row = -1 if row.nil?
     row += 1
