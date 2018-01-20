@@ -16,19 +16,20 @@ class AIHard
   
   def negamax(boardstatus, depth, alpha, beta, color)
     puts "Negamax called with color = #{color}, depth = #{depth}"
-    player = color == 1 ? 2 : 1
-    return (color * evaluate(boardstatus, player)) if (depth == 0 || terminal(boardstatus))
+    player = get_player(color)
+    if (depth == 0 || terminal(boardstatus))
+      evaluator = Evaluation.new(boardstatus)
+      return color * evaluator.evaluate(player)
+    end
   
     max = -9999999
     legal_moves(boardstatus).each do |column|
-      row = get_top_played_row(boardstatus[column])
-      row = -1 if row.nil?
-      row += 1
-      temp_board =  Marshal.load(Marshal.dump(boardstatus))
+      row = get_next_open_row(boardstatus, column)
+      temp_board = Marshal.load(Marshal.dump(boardstatus))
       
-      temp_board[column][row] = player
+      do_move(temp_board, column, row, get_player(-color))
       negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
-      puts "negamax_value #{negamax_value}"
+      puts "negamax_value #{negamax_value}, max = #{max}"
       if negamax_value > max
         max = negamax_value
         @best_value = [column, row]  if depth == @depth
@@ -54,90 +55,17 @@ class AIHard
     legal_moves(boardstatus).length == 0
   end
 
-  def evaluate(boardstatus, player)
-    utility = calculate_positive_utility(boardstatus, player) #- calculate_negative_utility(boardstatus, player)
-    puts "Player = #{player}, utility = #{utility}"
-    utility
+    row = get_top_played_row(boardstatus[column])
+    row = -1 if row.nil?
+    row += 1
   end
 
-  def calculate_positive_utility(boardstatus, player)
-    vertical_utility(boardstatus, player) +
-      horizontal_utility(boardstatus, player) +
-      top_diagonal_utility(boardstatus, player) +
-      bottom_diagonal_utility(boardstatus, player)
+  def get_player(color)
+    color == 1 ? 2 : 1
   end
 
-  def calculate_negative_utility(boardstatus, player)
-    opponent = player == 1 ? 2 : 1
-    1.1 * (vertical_utility(boardstatus, opponent) +
-        horizontal_utility(boardstatus, opponent) +
-        top_diagonal_utility(boardstatus, opponent) +
-        bottom_diagonal_utility(boardstatus, opponent))
-  end
-
-  def vertical_utility(boardstatus, player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(boardstatus[move_col])
-      next if move_row.nil?
-      4.times do |i| 
-        break if move_row - i < 0 || boardstatus[move_col][move_row-1] != player
-        utility += 10**i
-      end
-    end
-    puts "vertical: #{utility}"
-    utility
-  end
-
-  def horizontal_utility(boardstatus, player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(boardstatus[move_col])
-      next if move_row.nil?
-      4.times do |i| 
-        if move_col + i > 6 || boardstatus[move_col + i][move_row] != player
-          break
-        else
-          utility += 10**i
-        end
-      end
-    end
-    puts "horizontal: #{utility}"
-    utility
-  end
-
-  def top_diagonal_utility(boardstatus, player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(boardstatus[move_col])
-      next if move_row.nil?
-      4.times do |i| 
-        if move_col + i > 6 || move_row - i < 0 || boardstatus[move_col + i][move_row - i] != player
-          break;
-        else
-          utility += 10**i
-        end
-      end
-    end
-    puts "top_diag: #{utility}"
-    utility
-  end
-
-  def bottom_diagonal_utility(boardstatus, player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(boardstatus[move_col])
-      next if move_row.nil?
-      4.times do |i| 
-        if move_col + i > 6 || move_row + i > 5 || boardstatus[move_col + i][move_row + i] != player
-          break;
-        else
-          utility += 10**i
-        end
-      end
-    end
-    
-    puts "bot_diag: #{utility}"
-    utility
+  def do_move(board, column, row, player)
+    puts "column = #{column}, row=#{row}"
+    board[column][row] = player
   end
 end
