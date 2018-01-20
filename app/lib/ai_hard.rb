@@ -5,17 +5,13 @@ class AIHard
   end
   
   def pick_move(boardstatus)
-   # @best_value = {}
    @best_value = []
     value = negamax(boardstatus, @depth, -9999999, 9999999, 1)
-    puts "best values: #{@best_value}, with value = #{value}"
-    # move_col = @best_value.max_by { |move, value| value }[0]
-    # [move_col, boardstatus[move_col].index(0)]
     @best_value
   end
   
   def negamax(boardstatus, depth, alpha, beta, color)
-    puts "Negamax called with color = #{color}, depth = #{depth}"
+    #puts "Negamax called with color = #{color}, depth = #{depth}"
     player = get_player(color)
     if (depth == 0 || terminal(boardstatus))
       evaluator = Evaluation.new(boardstatus)
@@ -30,19 +26,17 @@ class AIHard
 
       winner = WinDetection.winner(temp_board, column, row, player)
       if winner == player
-        negamax_value = (20000 + @depth - depth)
+        negamax_value = (20000 + depth)
       else
         negamax_value = -negamax(temp_board, depth - 1, -beta, -alpha, -color)
       end
 
-      puts "column: #{column}, row: #{row}, negamax_value #{negamax_value}, max = #{max}"
+     # puts "column: #{column}, row: #{row}, negamax_value #{negamax_value}, max = #{max}"
       if negamax_value > max
         max = negamax_value
         @best_value = [column, row]  if depth == @depth
       end
-      
-      # max = [max, negamax_value].max
-      # @best_value[column] = max if depth == @depth
+
       alpha = [alpha, negamax_value].max
       return alpha if alpha >= beta
     end
@@ -72,7 +66,6 @@ class AIHard
   end
 
   def do_move(board, column, row, player)
-    puts "column = #{column}, row=#{row}"
     board[column][row] = player
   end
 end
