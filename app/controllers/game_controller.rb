@@ -10,7 +10,12 @@ class GameController < ApplicationController
   end
 
   def move
-    game = Game.updateGame(params[:id], params[:moveCol])
+    game = Game.update_game(params[:id], params[:moveCol])
+    render json: game.to_json
+  end
+
+  def computer
+    game = Game.update_game_computer(params[:id])
     render json: game.to_json
   end
 

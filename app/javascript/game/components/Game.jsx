@@ -16,7 +16,8 @@ export default class Game extends React.Component {
       player2: null,
       mode: props.match.params.mode,
       move: null,
-      winner: null
+      winner: null,
+      thinking: null
     };
   }
 
@@ -58,16 +59,41 @@ export default class Game extends React.Component {
         move: gamestate.move,
         winner: gamestate.winner
       });
+      if (this.state.mode === 3 && this.state.move === 2 && this.state.winner === 0){
+        this.setState({
+          thinking: true
+        });
+        axios.post('/game/computer/move', {
+          id: this.state.id
+        })
+        .then(response => {
+          let gamestate = response.data;
+          this.setState({
+            boardstatus: gamestate.boardstatus,
+            move: gamestate.move,
+            winner: gamestate.winner,
+            thinking: false
+          });
+        });
+      }
     })
     .catch(error => {
       console.error(error);
-    })
+    });
   }
 
   winner() {
     if (this.state.winner) {
       return (
         <h1 className='winner'> Winner - Player {this.state.winner} </h1>
+      );
+    }
+  }
+
+  thinking() {
+    if (this.state.thinking) {
+      return (
+        <h1 className='thinking'> Computer is thinking... </h1>
       );
     }
   }
@@ -86,6 +112,7 @@ export default class Game extends React.Component {
             onClick={col => this.handleClick(col)}
           />
           {this.winner()}
+          {this.thinking()}
         </div>
         <div className="game-status">
           <div>Turn - Player {this.state.move} </div>

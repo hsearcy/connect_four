@@ -38,9 +38,20 @@
 
   .winner {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 30%;
+    left: 30%;
     z-index: 2;
+    color: gold;
+    text-shadow: 1px 1px black;
+  }
+
+  .thinking {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    z-index: 2;
+    text-shadow: 1px 1px black;
+    color: goldenrod;
   }
 }
 
