@@ -48,6 +48,7 @@ export default class Game extends React.Component {
 
   handleClick(col) {
     if (this.state.winner) return;
+    if (this.state.move === 2 && this.state.mode > 1)  return;
     this.doMove(col);
   }
 
