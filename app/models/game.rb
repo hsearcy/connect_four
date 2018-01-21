@@ -11,14 +11,15 @@ class Game < ApplicationRecord
 
   def self.update_game(id, move_col)
     game = self.find(id)
-    move_row = game.boardstatus[move_col].index(0)
+    col = move_col.to_i
+    row = game.boardstatus[col].index(0)
     
-    unless move_row.nil? 
-      game.boardstatus[move_col][move_row] = game.move
-      game.winner = WinDetection.winner(game.boardstatus, move_col, move_row, game.move)
+    unless row.nil? 
+      game.boardstatus[col][row] = game.move
+      game.winner = WinDetection.winner(game.boardstatus, col, row, game.move)
       if game.winner == 0
         if game.mode == 2
-          ai_move = AIEasy.pick_move(game.boardstatus, move_col, move_row)
+          ai_move = AIEasy.pick_move(game.boardstatus, col, row)
           game.boardstatus[ai_move[0]][ai_move[1]] = 2
           game.winner = ai_move[2]
         else
