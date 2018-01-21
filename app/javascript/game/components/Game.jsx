@@ -59,9 +59,7 @@ export default class Game extends React.Component {
     .then(response => {
       this.updateGameState(response.data);
       if (this.state.mode === 3 && this.state.move === 2 && this.state.winner === 0){
-        this.setState({
-          thinking: true
-        });
+        this.setState({ thinking: true });
         this.getComputerMove();
       }
     })
@@ -125,7 +123,7 @@ export default class Game extends React.Component {
         </div>
         <div className="game-status">
           <div>Turn - Player {this.state.move} </div>
-          <div>Game ID (for loading): {this.state.id} </div>
+          <div>Game ID (can be used to load a game): {this.state.id} </div>
         </div>
         <div >
           <button onClick={() => this.startGame(true)}>

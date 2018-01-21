@@ -2,7 +2,8 @@ class Evaluation
 
   def initialize(boardstatus)
     @boardstatus = boardstatus
-    
+    @utility = {}
+    @continue = {}
   end
 
   def evaluate(player)
@@ -11,70 +12,53 @@ class Evaluation
   end
 
   def calculate_utility(player)
-    vertical_utility(player) + horizontal_utility(player) + top_diagonal_utility(player) + bottom_diagonal_utility(player)
-  end
-
-  def vertical_utility(player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(@boardstatus[move_col])
-      next if move_row.nil?
-      (1..3).each do |i| 
-        break if move_row - i < 0 || @boardstatus[move_col][move_row-i] != player
-        utility += 10**i
+    [:vertical, :horizontal, :top_diagonal, :bot_diagonal].each { |key| @utility[key] = 0 }
+    7.times do |column|
+      [:vertical, :horizontal, :top_diagonal, :bot_diagonal].each { |key| @continue[key] = true }
+      row = get_top_played_row(@boardstatus[column])
+      next if row.nil?
+      (1..3).each do |i|
+        eval_vertical_utility(player, column, row, i) if @continue[:vertical]
+        eval_horizontal_utility(player, column, row, i) if @continue[:horizontal]
+        eval_top_diagonal_utility(player, column, row, i) if @continue[:top_diagonal]
+        eval_bot_diagonal_utility(player, column, row, i) if @continue[:bot_diagonal]
       end
     end
-    utility
+    @utility.values.reduce(:+)
   end
 
-  def horizontal_utility(player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(@boardstatus[move_col])
-      next if move_row.nil?
-      (1..3).each do |i| 
-        if move_col + i > 6 || @boardstatus[move_col + i][move_row] != player
-          break
-        else
-          utility += 10**i
-        end
-      end
+  def eval_vertical_utility(player, column, row, i)
+    if row - i < 0 || @boardstatus[column][row - i] != player
+      @continue[:vertical] = false
+    else
+      @utility[:vertical] += 10**i 
     end
-    utility
-  end
+  end 
 
-  def top_diagonal_utility(player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(@boardstatus[move_col])
-      next if move_row.nil?
-      (1..3).each do |i| 
-        if move_col + i > 6 || move_row - i < 0 || @boardstatus[move_col + i][move_row - i] != player
-          break;
-        else
-          utility += 10**i
-        end
-      end
+  def eval_horizontal_utility(player, column, row, i)
+   if column + i > 6 || @boardstatus[column + i][row] != player
+    @continue[:horizontal] = false
+   else
+    @utility[:horizontal] += 10**i 
+   end
+  end 
+
+  def eval_top_diagonal_utility(player, column, row, i)
+    if column + i > 6 || row - i < 0 || @boardstatus[column + i][row - i] != player
+      @continue[:top_diagonal] = false
+    else
+      @utility[:top_diagonal] += 10**i 
     end
-    utility
-  end
+  end 
 
-  def bottom_diagonal_utility(player)
-    utility = 0
-    7.times do |move_col|
-      move_row = get_top_played_row(@boardstatus[move_col])
-      next if move_row.nil?
-      (1..3).each do |i| 
-        if move_col + i > 6 || move_row + i > 5 || @boardstatus[move_col + i][move_row + i] != player
-          break;
-        else
-          utility += 10**i
-        end
-      end
+  def eval_bot_diagonal_utility(player, column, row, i)
+    if column + i > 6 || row + i < 5 || @boardstatus[column + i][row + i] != player
+      @continue[:bot_diagonal] = false
+    else
+      @utility[:bot_diagonal] += 10**i 
     end
-    utility
-  end
-
+  end 
+  
   def get_top_played_row(column)
     column.each_index.select{|row| column[row] > 0 }.last
   end
