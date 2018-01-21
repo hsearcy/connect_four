@@ -27,4 +27,6 @@ A playable version deployed on heroku can also be found [here](https://hfs-conne
 
 ## Todo:
 
-Need to finish writing tests. I should really test individual methods instead of testing the controller because as I have it now each test is actually testing lots methods 
+- Need to finish writing tests. I should really test individual methods instead of testing the controller because as I have it now each test is actually testing lots methods 
+
+- Could also refactor WinDetection in the same way that I refactored Evaluation
