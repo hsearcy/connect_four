@@ -48,37 +48,46 @@ export default class Game extends React.Component {
 
   handleClick(col) {
     if (this.state.winner) return;
+    this.doMove(col);
+  }
+
+  doMove(col) {
     axios.post('/game/move', {
       id: this.state.id,
       moveCol: col
     })
     .then(response => {
-      let gamestate = response.data;
-      this.setState({
-        boardstatus: gamestate.boardstatus,
-        move: gamestate.move,
-        winner: gamestate.winner
-      });
+      this.updateGameState(response.data);
       if (this.state.mode === 3 && this.state.move === 2 && this.state.winner === 0){
         this.setState({
           thinking: true
         });
-        axios.post('/game/computer/move', {
-          id: this.state.id
-        })
-        .then(response => {
-          let gamestate = response.data;
-          this.setState({
-            boardstatus: gamestate.boardstatus,
-            move: gamestate.move,
-            winner: gamestate.winner,
-            thinking: false
-          });
-        });
+        this.getComputerMove();
       }
     })
     .catch(error => {
       console.error(error);
+    });
+  }
+
+  getComputerMove() {
+    axios.post('/game/computer/move', {
+      id: this.state.id
+    })
+    .then(response => {
+      this.updateGameState(response.data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  updateGameState(gamestate) {
+    this.setState({
+      boardstatus: gamestate.boardstatus,
+      move: gamestate.move,
+      winner: gamestate.winner,
+      thinking: false
     });
   }
 
